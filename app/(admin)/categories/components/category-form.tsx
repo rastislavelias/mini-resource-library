@@ -78,7 +78,7 @@ export function CategoryForm(props: CategoryFormProps) {
   const pendingLabel = isEditMode ? 'Saving' : 'Adding'
 
   return (
-    <Card className="max-w-md sm:max-w-xl">
+    <Card className="max-w-md">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
