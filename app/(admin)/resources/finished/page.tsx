@@ -16,12 +16,12 @@ export default function Page() {
       <SiteHeader>
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
+            <BreadcrumbItem className="hidden sm:block">
               <BreadcrumbLink asChild>
                 <Link href="/resources">Resources</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbSeparator className="hidden sm:block" />
             <BreadcrumbItem>
               <BreadcrumbPage>Finished</BreadcrumbPage>
             </BreadcrumbItem>

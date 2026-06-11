@@ -8,6 +8,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { ContainerMain } from '@/components/container-main'
+import { CategoryForm } from '../components/category-form'
 import { SiteHeader } from '@/components/site-header'
 
 export default function Page() {
@@ -18,21 +20,19 @@ export default function Page() {
           <BreadcrumbList>
             <BreadcrumbItem className="hidden sm:block">
               <BreadcrumbLink asChild>
-                <Link href="/resources">Resources</Link>
+                <Link href="/categories">Categories</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="hidden sm:block" />
             <BreadcrumbItem>
-              <BreadcrumbPage>To-read</BreadcrumbPage>
+              <BreadcrumbPage>Add</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </SiteHeader>
-      <div className="flex flex-1 flex-col">
-        <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="px-4 lg:px-6">WIP</div>
-        </div>
-      </div>
+      <ContainerMain>
+        <CategoryForm mode="create" />
+      </ContainerMain>
     </>
   )
 }

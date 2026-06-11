@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import '../globals.css'
 
 import { AppSidebar } from '@/components/app-sidebar'
+import { ResponsiveToaster } from '@/components/responsive-toaster'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { ThemeProvider } from '@/components/theme-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -64,6 +65,7 @@ export default function RootLayout({
               </SidebarProvider>
             </TooltipProvider>
           </ThemeProvider>
+          <ResponsiveToaster />
         </body>
       </html>
     </ClerkProvider>

@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { BookOpen, LayoutDashboard, Library } from 'lucide-react'
+import { BookOpen, LayoutDashboard, Library, List } from 'lucide-react'
 
 import { NavMain } from '@/components/nav-main'
 import { NavUser } from '@/components/nav-user'
@@ -48,6 +48,11 @@ const data = {
           url: '/resources/finished',
         },
       ],
+    },
+    {
+      title: 'Categories',
+      url: '/categories',
+      icon: List,
     },
   ],
 }
