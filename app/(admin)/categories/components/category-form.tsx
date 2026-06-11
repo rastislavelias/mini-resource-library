@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -117,20 +118,22 @@ export function CategoryForm(props: CategoryFormProps) {
                 </SelectTrigger>
 
                 <SelectContent>
-                  {CATEGORY_COLORS.map((colorOption) => (
-                    <SelectItem
-                      key={colorOption.value}
-                      value={colorOption.value}
-                    >
-                      <span className="flex items-center gap-2">
-                        <span
-                          className={`size-2.5 rounded-full ${colorOption.bulletClassName}`}
-                          aria-hidden="true"
-                        />
-                        {colorOption.label}
-                      </span>
-                    </SelectItem>
-                  ))}
+                  <SelectGroup>
+                    {CATEGORY_COLORS.map((colorOption) => (
+                      <SelectItem
+                        key={colorOption.value}
+                        value={colorOption.value}
+                      >
+                        <span className="flex items-center gap-2">
+                          <span
+                            className={`size-2.5 rounded-full ${colorOption.bulletClassName}`}
+                            aria-hidden="true"
+                          />
+                          {colorOption.label}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
                 </SelectContent>
               </Select>
             </Field>
