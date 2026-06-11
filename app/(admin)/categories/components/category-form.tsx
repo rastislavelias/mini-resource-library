@@ -11,7 +11,7 @@ import { CATEGORY_COLORS, isCategoryColor } from '@/lib/category-colors'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Field, FieldLabel } from '@/components/ui/field'
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -84,54 +84,60 @@ export function CategoryForm(props: CategoryFormProps) {
       </CardHeader>
 
       <CardContent>
-        <form action={formAction} className="space-y-4">
-          {isEditMode && (
-            <input type="hidden" name="id" value={props.category.id} />
-          )}
+        <form action={formAction}>
+          <FieldGroup>
+            {isEditMode && (
+              <input type="hidden" name="id" value={props.category.id} />
+            )}
 
-          <Field>
-            <FieldLabel htmlFor="name">Name</FieldLabel>
-            <Input
-              autoComplete="off"
-              id="name"
-              maxLength={40}
-              name="name"
-              onChange={(event) => setName(event.target.value)}
-              placeholder="e.g. Frontend, Backend, TypeScript"
-              required
-              type="text"
-              value={name}
-            />
-          </Field>
+            <Field>
+              <FieldLabel htmlFor="name">Name</FieldLabel>
+              <Input
+                autoComplete="off"
+                id="name"
+                maxLength={40}
+                name="name"
+                onChange={(event) => setName(event.target.value)}
+                placeholder="e.g. Frontend, Backend, TypeScript"
+                required
+                type="text"
+                value={name}
+              />
+            </Field>
 
-          <Field>
-            <FieldLabel htmlFor="color">Color</FieldLabel>
-            <Select
-              name="color"
-              value={color}
-              onValueChange={handleColorChange}
-            >
-              <SelectTrigger id="color" className="w-full">
-                <SelectValue placeholder="Select color" />
-              </SelectTrigger>
+            <Field>
+              <FieldLabel htmlFor="color">Color</FieldLabel>
+              <Select
+                name="color"
+                value={color}
+                onValueChange={handleColorChange}
+              >
+                <SelectTrigger id="color" className="w-full">
+                  <SelectValue placeholder="Select color" />
+                </SelectTrigger>
 
-              <SelectContent>
-                {CATEGORY_COLORS.map((colorOption) => (
-                  <SelectItem key={colorOption.value} value={colorOption.value}>
-                    <span className="flex items-center gap-2">
-                      <span
-                        className={`size-2.5 rounded-full ${colorOption.bulletClassName}`}
-                        aria-hidden="true"
-                      />
-                      {colorOption.label}
-                    </span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </Field>
-
-          <SubmitButton label={buttonLabel} pendingLabel={pendingLabel} />
+                <SelectContent>
+                  {CATEGORY_COLORS.map((colorOption) => (
+                    <SelectItem
+                      key={colorOption.value}
+                      value={colorOption.value}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span
+                          className={`size-2.5 rounded-full ${colorOption.bulletClassName}`}
+                          aria-hidden="true"
+                        />
+                        {colorOption.label}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </Field>
+            <Field orientation="horizontal">
+              <SubmitButton label={buttonLabel} pendingLabel={pendingLabel} />
+            </Field>
+          </FieldGroup>
         </form>
       </CardContent>
     </Card>
