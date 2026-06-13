@@ -1,5 +1,4 @@
 'use client'
-
 import { useActionState, useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import Link from 'next/link'
@@ -31,18 +30,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import type { FormState } from '../actions'
-import type { CategoryWithResources } from './categories-list'
+import type { Category } from './categories-list'
 
 const initialState: FormState = {
   status: 'idle',
   message: '',
 }
 
-export function CategoryActions({
-  category,
-}: {
-  category: CategoryWithResources
-}) {
+export function CategoryActions({ category }: { category: Category }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [state, formAction] = useActionState(deleteCategory, initialState)
 
@@ -125,6 +120,11 @@ export function CategoryActions({
             </form>
           ) : (
             <AlertDialogFooter>
+              <Button variant="outline" asChild>
+                <Link href={`/resources?category=${category.id}`}>
+                  View resources
+                </Link>
+              </Button>
               <AlertDialogCancel>Close</AlertDialogCancel>
             </AlertDialogFooter>
           )}

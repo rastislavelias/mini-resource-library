@@ -1,5 +1,4 @@
 'use client'
-
 import { useActionState, useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { toast } from 'sonner'
@@ -113,7 +112,7 @@ export function CategoryForm(props: CategoryFormProps) {
                 value={color}
                 onValueChange={handleColorChange}
               >
-                <SelectTrigger id="color" className="w-full">
+                <SelectTrigger id="color">
                   <SelectValue placeholder="Select color" />
                 </SelectTrigger>
 

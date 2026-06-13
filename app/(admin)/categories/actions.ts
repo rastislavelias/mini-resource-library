@@ -1,12 +1,11 @@
 'use server'
-
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
 import { CategoryColor, Prisma } from '@/generated/prisma/client'
 
 import { prisma } from '@/lib/prisma'
-import { isCategoryColor } from '@/lib/category-colors'
+import { categorySchema } from '@/lib/validations/category'
 
 export type FormState = {
   status: 'idle' | 'success' | 'error'
@@ -57,6 +56,65 @@ export async function createCategory(
 
   revalidatePath('/categories')
   redirect('/categories?toast=category-created')
+}
+
+export type InlineCategoryState = {
+  status: 'idle' | 'success' | 'error'
+  message: string
+  category?: {
+    id: string
+    name: string
+    color: CategoryColor
+  }
+}
+
+export async function createInlineCategory(
+  _prevState: InlineCategoryState,
+  formData: FormData
+): Promise<InlineCategoryState> {
+  const { userId } = await auth()
+
+  if (!userId) {
+    redirect('/sign-in')
+  }
+
+  const input = getCategoryInput(formData)
+
+  if (!input.ok) {
+    return {
+      status: 'error',
+      message: input.state.message,
+    }
+  }
+
+  try {
+    const category = await prisma.category.create({
+      data: {
+        name: normalizeCategoryName(input.name),
+        color: input.color,
+        userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        color: true,
+      },
+    })
+
+    revalidatePath('/categories')
+    revalidatePath('/resources/add')
+
+    return {
+      status: 'success',
+      message: 'Category added.',
+      category,
+    }
+  } catch (error) {
+    return handleCategoryError(
+      error,
+      'Could not add category. Please try again.'
+    )
+  }
 }
 
 export async function updateCategory(
@@ -194,50 +252,25 @@ export async function deleteCategory(
 // Helpers
 
 function getCategoryInput(formData: FormData): CategoryInput {
-  const colorValue = formData.get('color')
-  const nameValue = formData.get('name')
+  const result = categorySchema.safeParse({
+    name: formData.get('name'),
+    color: formData.get('color'),
+  })
 
-  if (typeof nameValue !== 'string') {
+  if (!result.success) {
     return {
       ok: false,
       state: {
         status: 'error',
-        message: 'Category name is required.',
+        message: result.error.issues[0]?.message ?? 'Invalid category.',
       },
     }
   }
-
-  const name = nameValue.trim()
-
-  if (!name) {
-    return {
-      ok: false,
-      state: {
-        status: 'error',
-        message: 'Category name is required.',
-      },
-    }
-  }
-
-  if (name.length > 40) {
-    return {
-      ok: false,
-      state: {
-        status: 'error',
-        message: 'Category name must be 40 characters or less.',
-      },
-    }
-  }
-
-  const color: CategoryColor =
-    typeof colorValue === 'string' && isCategoryColor(colorValue)
-      ? colorValue
-      : CategoryColor.SLATE
 
   return {
     ok: true,
-    name,
-    color,
+    name: normalizeCategoryName(result.data.name),
+    color: result.data.color as CategoryColor,
   }
 }
 

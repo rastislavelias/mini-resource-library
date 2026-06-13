@@ -29,6 +29,11 @@ export default async function Page({
 
   const category = await prisma.category.findUnique({
     where: { id, userId },
+    select: {
+      id: true,
+      name: true,
+      color: true,
+    },
   })
 
   if (!category) {

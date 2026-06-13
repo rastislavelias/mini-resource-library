@@ -1,4 +1,4 @@
-import type { CategoryWithResources } from './categories-list'
+import type { Category } from './categories-list'
 
 import { formatDate } from '@/lib/format-date'
 
@@ -6,11 +6,7 @@ import { CategoryActions } from './category-actions'
 import { CategoryBadge } from '@/components/category-badge'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-export function CategoryItem({
-  category,
-}: {
-  category: CategoryWithResources
-}) {
+export function CategoryItem({ category }: { category: Category }) {
   return (
     <TableRow>
       <TableCell>

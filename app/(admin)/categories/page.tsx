@@ -24,7 +24,11 @@ export default async function Page() {
     where: {
       userId,
     },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      color: true,
+      createdAt: true,
       _count: {
         select: {
           resources: true,

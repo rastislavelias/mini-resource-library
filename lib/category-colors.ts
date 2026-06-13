@@ -61,3 +61,9 @@ export type CategoryColorValue = (typeof CATEGORY_COLORS)[number]['value']
 export function isCategoryColor(value: string): value is CategoryColorValue {
   return CATEGORY_COLORS.some((color) => color.value === value)
 }
+
+export function getCategoryColor(value: string) {
+  return (
+    CATEGORY_COLORS.find((color) => color.value === value) ?? CATEGORY_COLORS[0]
+  )
+}

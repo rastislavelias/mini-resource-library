@@ -13,16 +13,13 @@ const toastMessages: Record<string, string> = {
 export function CategoriesToast() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const shownToastRef = useRef(false)
+  const lastShownToastRef = useRef<string | null>(null)
 
   useEffect(() => {
-    if (shownToastRef.current) {
-      return
-    }
-
     const toastKey = searchParams.get('toast')
 
     if (!toastKey) {
+      lastShownToastRef.current = null
       return
     }
 
@@ -32,13 +29,14 @@ export function CategoriesToast() {
       return
     }
 
-    shownToastRef.current = true
+    if (lastShownToastRef.current === toastKey) {
+      return
+    }
+
+    lastShownToastRef.current = toastKey
 
     toast.success(message)
-
-    router.replace('/categories', {
-      scroll: false,
-    })
+    router.replace('/categories', { scroll: false })
   }, [router, searchParams])
 
   return null

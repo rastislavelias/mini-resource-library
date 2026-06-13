@@ -27,18 +27,18 @@ import {
 import { buttonVariants } from '@/components/ui/button'
 import { CategoryItem } from './category-item'
 
-import type { Category } from '@/generated/prisma/client'
-export type CategoryWithResources = Category & {
+import type { CategoryColor } from '@/generated/prisma/client'
+export type Category = {
+  id: string
+  name: string
+  color: CategoryColor
+  createdAt: Date
   _count: {
     resources: number
   }
 }
 
-export function CategoriesList({
-  categories,
-}: {
-  categories: CategoryWithResources[]
-}) {
+export function CategoriesList({ categories }: { categories: Category[] }) {
   if (categories.length === 0) {
     return (
       <Empty className="border border-dashed">
