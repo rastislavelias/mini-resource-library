@@ -258,11 +258,62 @@ export async function deleteResource(
   _prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  console.log(_prevState, formData)
-  return {
-    status: 'idle',
-    message: '',
+  const { userId } = await auth()
+
+  if (!userId) {
+    redirect('/sign-in')
   }
+
+  const idValue = formData.get('id')
+  const returnToValue = formData.get('returnTo')
+
+  if (typeof idValue !== 'string' || !idValue) {
+    return {
+      status: 'error',
+      message: 'Resource id is missing.',
+    }
+  }
+
+  const returnTo = getSafeResourceReturnPath(
+    typeof returnToValue === 'string' ? returnToValue : undefined
+  )
+
+  try {
+    const resource = await prisma.resource.findFirst({
+      where: {
+        id: idValue,
+        userId,
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (!resource) {
+      return {
+        status: 'error',
+        message: 'Resource not found.',
+      }
+    }
+
+    await prisma.resource.delete({
+      where: {
+        id: resource.id,
+      },
+    })
+  } catch (error) {
+    return handleResourceError(
+      error,
+      'Could not delete resource. Please try again.'
+    )
+  }
+
+  revalidateResourcePaths()
+
+  const redirectParams = new URLSearchParams()
+  redirectParams.set('toast', 'resource-deleted')
+
+  redirect(addSearchParams(returnTo, redirectParams))
 }
 
 // Helpers

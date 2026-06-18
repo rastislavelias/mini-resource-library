@@ -1,1 +1,1 @@
-export const RESOURCE_PAGE_SIZE = 10
+export const RESOURCE_PAGE_SIZE = 12
