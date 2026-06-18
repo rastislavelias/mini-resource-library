@@ -1,8 +1,22 @@
 'use client'
-import Link from 'next/link'
-import { BookOpen, LayoutDashboard, Library, List } from 'lucide-react'
+import {
+  BookOpenIcon,
+  LayoutDashboardIcon,
+  LibraryBigIcon,
+  TagIcon,
+} from 'lucide-react'
+import {
+  IconCircle,
+  IconCircleCheck,
+  IconCircleDot,
+  IconList,
+} from '@tabler/icons-react'
 
+import type { ResourceCounts } from '@/lib/resources/counts'
+
+import { NavCategories } from '@/components/nav-categories'
 import { NavMain } from '@/components/nav-main'
+import { NavSecondary } from '@/components/nav-secondary'
 import { NavUser } from '@/components/nav-user'
 import {
   Sidebar,
@@ -13,75 +27,89 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { SidebarLink } from '@/components/sidebar-link'
 
-const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
-  navMain: [
-    {
-      title: 'Dashboard',
-      url: '/dashboard',
-      icon: LayoutDashboard,
-    },
-    {
-      title: 'Resources',
-      url: '/resources',
-      icon: BookOpen,
-      items: [
-        {
-          title: 'All Resources',
-          url: '/resources',
-        },
-        {
-          title: 'To-read',
-          url: '/resources/to-read',
-        },
-        {
-          title: 'Reading',
-          url: '/resources/reading',
-        },
-        {
-          title: 'Finished',
-          url: '/resources/finished',
-        },
-      ],
-    },
-    {
-      title: 'Categories',
-      url: '/categories',
-      icon: List,
-    },
-  ],
-}
+import type { categories } from '@/components/nav-categories'
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  resourceCounts,
+  categories,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & {
+  resourceCounts: ResourceCounts
+  categories: categories
+}) {
+  const data = {
+    navMain: [
+      {
+        title: 'Dashboard',
+        url: '/dashboard',
+        icon: LayoutDashboardIcon,
+      },
+      {
+        title: 'Resources',
+        url: '/resources',
+        icon: BookOpenIcon,
+        items: [
+          {
+            title: 'All resources',
+            url: '/resources',
+            count: resourceCounts.all,
+            icon: IconList,
+          },
+          {
+            title: 'To-read',
+            url: '/resources/to-read',
+            count: resourceCounts.toRead,
+            icon: IconCircle,
+          },
+          {
+            title: 'Reading',
+            url: '/resources/reading',
+            count: resourceCounts.reading,
+            icon: IconCircleDot,
+          },
+          {
+            title: 'Finished',
+            url: '/resources/finished',
+            count: resourceCounts.finished,
+            icon: IconCircleCheck,
+          },
+        ],
+      },
+    ],
+    navSecondary: [
+      {
+        title: 'Manage categories',
+        url: '/categories',
+        icon: TagIcon,
+      },
+    ],
+  }
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild size="lg">
-              <Link href="/dashboard">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <Library className="size-4" />
-                </div>
-
+            <SidebarMenuButton asChild className="mt-2">
+              <SidebarLink href="/dashboard">
+                <LibraryBigIcon className="size-5!" />
                 <span className="text-sm leading-tight font-medium">
                   Mini Resource Library
                 </span>
-              </Link>
+              </SidebarLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavCategories categories={categories} />
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   )

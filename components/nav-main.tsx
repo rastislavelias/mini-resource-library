@@ -1,8 +1,11 @@
 'use client'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ChevronRight, Plus, type LucideIcon } from 'lucide-react'
+import { ChevronRight, type LucideIcon } from 'lucide-react'
+import { IconCirclePlusFilled } from '@tabler/icons-react'
 
+import { type ResourceStatusValue } from '@/lib/resources/status'
+
+import { Badge } from '@/components/ui/badge'
 import {
   Collapsible,
   CollapsibleContent,
@@ -17,8 +20,8 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
-  SidebarSeparator,
 } from '@/components/ui/sidebar'
+import { SidebarLink } from '@/components/sidebar-link'
 
 export function NavMain({
   items,
@@ -30,6 +33,9 @@ export function NavMain({
     items?: {
       title: string
       url: string
+      count?: number
+      status?: ResourceStatusValue
+      icon?: LucideIcon
     }[]
   }[]
 }) {
@@ -39,6 +45,20 @@ export function NavMain({
     <>
       <SidebarGroup>
         <SidebarGroupContent className="flex flex-col gap-2">
+          <SidebarMenu className="pb-2">
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                tooltip="Add Resource"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8"
+                asChild
+              >
+                <SidebarLink href="/resources/add">
+                  <IconCirclePlusFilled />
+                  Add Resource
+                </SidebarLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
           <SidebarMenu className="space-y-1">
             {items.map((item) => {
               if (item.items) {
@@ -56,23 +76,31 @@ export function NavMain({
                           isActive={pathname.startsWith(item.url)}
                         >
                           {item.icon && <item.icon />}
-                          <span>{item.title}</span>
-                          <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                          {item.title}
+                          <ChevronRight className="me-1 ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
                       <CollapsibleContent className="mt-0.5">
-                        <SidebarMenuSub>
+                        <SidebarMenuSub className="me-0 pe-0">
                           {item.items?.map((subItem) => {
                             const isActive = pathname === subItem.url
+
                             return (
                               <SidebarMenuSubItem key={subItem.title}>
                                 <SidebarMenuSubButton
                                   asChild
                                   isActive={isActive}
                                 >
-                                  <Link href={subItem.url}>
+                                  <SidebarLink href={subItem.url}>
+                                    {subItem.icon && <subItem.icon />}
                                     <span>{subItem.title}</span>
-                                  </Link>
+                                    <Badge
+                                      variant="outline"
+                                      className="text-muted-foreground ml-auto"
+                                    >
+                                      {subItem.count}
+                                    </Badge>
+                                  </SidebarLink>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             )
@@ -90,36 +118,15 @@ export function NavMain({
                       tooltip={item.title}
                       asChild
                     >
-                      <Link href={item.url}>
+                      <SidebarLink href={item.url}>
                         {item.icon && <item.icon />}
-                        <span>{item.title}</span>
-                      </Link>
+                        {item.title}
+                      </SidebarLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 )
               }
             })}
-          </SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
-
-      <SidebarSeparator />
-
-      <SidebarGroup>
-        <SidebarGroupContent className="flex flex-col gap-2">
-          <SidebarMenu>
-            <SidebarMenuItem className="flex items-center gap-2">
-              <SidebarMenuButton
-                asChild
-                className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
-                tooltip="Add Resource"
-              >
-                <Link href="/resources/add">
-                  <Plus className="size-4" />
-                  <span>Add Resource</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

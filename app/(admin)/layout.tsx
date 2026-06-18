@@ -2,7 +2,12 @@ import type { Metadata } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
 import { shadcn } from '@clerk/ui/themes'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { redirect } from 'next/navigation'
+import { auth } from '@clerk/nextjs/server'
+import { prisma } from '@/lib/prisma'
 import '../globals.css'
+
+import { getResourceCounts } from '@/lib/resources/get-resource-counts'
 
 import { AppSidebar } from '@/components/app-sidebar'
 import { ResponsiveToaster } from '@/components/responsive-toaster'
@@ -25,11 +30,46 @@ export const metadata: Metadata = {
   description: 'Save and manage private learning resources.',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { userId } = await auth()
+
+  if (!userId) {
+    redirect('/sign-in')
+  }
+
+  const [resourceCounts, categories] = await Promise.all([
+    getResourceCounts(userId),
+    prisma.category.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        color: true,
+        _count: {
+          select: {
+            resources: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          resources: {
+            _count: 'desc',
+          },
+        },
+        {
+          name: 'asc',
+        },
+      ],
+    }),
+  ])
+
   return (
     <ClerkProvider
       appearance={{
@@ -60,7 +100,11 @@ export default function RootLayout({
                   } as React.CSSProperties
                 }
               >
-                <AppSidebar variant="inset" />
+                <AppSidebar
+                  categories={categories}
+                  resourceCounts={resourceCounts}
+                  variant="inset"
+                />
                 <SidebarInset>{children}</SidebarInset>
               </SidebarProvider>
             </TooltipProvider>
