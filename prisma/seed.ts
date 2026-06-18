@@ -34,6 +34,10 @@ const prisma = new PrismaClient({ adapter })
 
 const categories = [
   {
+    name: 'Fullstack',
+    color: CategoryColor.PURPLE,
+  },
+  {
     name: 'Frontend',
     color: CategoryColor.BLUE,
   },
@@ -42,12 +46,8 @@ const categories = [
     color: CategoryColor.GREEN,
   },
   {
-    name: 'JavaScript',
-    color: CategoryColor.YELLOW,
-  },
-  {
     name: 'TypeScript',
-    color: CategoryColor.PURPLE,
+    color: CategoryColor.YELLOW,
   },
   {
     name: 'Design',
@@ -56,6 +56,24 @@ const categories = [
 ] as const
 
 const resources = [
+  {
+    title: 'Next.js Documentation',
+    url: 'https://nextjs.org/docs',
+    notes:
+      'Useful reference for App Router, server components, routing, server actions, and deployment.',
+    status: ResourceStatus.READING,
+    rating: 5,
+    categoryName: 'Fullstack',
+  },
+  {
+    title: 'Prisma Documentation',
+    url: 'https://www.prisma.io/docs',
+    notes:
+      'Reference for Prisma schema, migrations, relations, and querying PostgreSQL from a Next.js app.',
+    status: ResourceStatus.READING,
+    rating: 5,
+    categoryName: 'Backend',
+  },
   {
     title: 'React Documentation',
     url: 'https://react.dev',
@@ -66,31 +84,22 @@ const resources = [
     categoryName: 'Frontend',
   },
   {
-    title: 'Next.js Documentation',
-    url: 'https://nextjs.org/docs',
+    title: 'Clerk Next.js Documentation',
+    url: 'https://clerk.com/docs/references/nextjs/overview',
     notes:
-      'Useful reference for App Router, server components, routing, and deployment.',
-    status: ResourceStatus.READING,
-    rating: 5,
-    categoryName: 'Frontend',
+      'Authentication documentation for protecting routes, reading the current user, and handling sign-in flows in Next.js.',
+    status: ResourceStatus.TO_READ,
+    rating: 4,
+    categoryName: 'Fullstack',
   },
   {
-    title: 'TypeScript Handbook',
-    url: 'https://www.typescriptlang.org/docs/',
+    title: 'PostgreSQL Documentation',
+    url: 'https://www.postgresql.org/docs/',
     notes:
-      'Core TypeScript concepts explained clearly. Good for checking types, unions, and narrowing.',
+      'Official PostgreSQL documentation for understanding relational data, constraints, indexes, and queries.',
     status: ResourceStatus.TO_READ,
     rating: null,
-    categoryName: 'TypeScript',
-  },
-  {
-    title: 'JavaScript.info',
-    url: 'https://javascript.info',
-    notes:
-      'Detailed JavaScript lessons covering fundamentals, browser APIs, objects, async code, and more.',
-    status: ResourceStatus.FINISHED,
-    rating: 5,
-    categoryName: 'JavaScript',
+    categoryName: 'Backend',
   },
   {
     title: 'MDN Web Docs',
@@ -102,13 +111,22 @@ const resources = [
     categoryName: 'Frontend',
   },
   {
-    title: 'Prisma Documentation',
-    url: 'https://www.prisma.io/docs',
+    title: 'TypeScript Handbook',
+    url: 'https://www.typescriptlang.org/docs/',
     notes:
-      'Reference for Prisma schema, migrations, relations, and querying PostgreSQL from a Next.js app.',
+      'Core TypeScript concepts explained clearly. Good for checking types, unions, and narrowing.',
     status: ResourceStatus.TO_READ,
-    rating: null,
-    categoryName: 'Backend',
+    rating: 4,
+    categoryName: 'TypeScript',
+  },
+  {
+    title: 'Web.dev Performance Guides',
+    url: 'https://web.dev/learn/performance',
+    notes:
+      'Practical frontend performance guidance covering loading, rendering, Core Web Vitals, and user experience.',
+    status: ResourceStatus.FINISHED,
+    rating: 4,
+    categoryName: 'Frontend',
   },
   {
     title: 'Node.js Documentation',
@@ -124,7 +142,7 @@ const resources = [
     url: 'https://www.refactoringui.com/',
     notes:
       'Practical UI design advice for developers. Useful for spacing, hierarchy, and visual polish.',
-    status: ResourceStatus.READING,
+    status: ResourceStatus.FINISHED,
     rating: 4,
     categoryName: 'Design',
   },
