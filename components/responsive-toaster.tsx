@@ -1,25 +1,35 @@
 'use client'
-import { useEffect, useState } from 'react'
+
+import { useSyncExternalStore } from 'react'
 
 import { Toaster } from '@/components/ui/sonner'
 
+const MEDIA_QUERY = '(max-width: 640px)'
+
+function subscribe(callback: () => void) {
+  const mediaQuery = window.matchMedia(MEDIA_QUERY)
+
+  mediaQuery.addEventListener('change', callback)
+
+  return () => {
+    mediaQuery.removeEventListener('change', callback)
+  }
+}
+
+function getSnapshot() {
+  return window.matchMedia(MEDIA_QUERY).matches
+}
+
+function getServerSnapshot() {
+  return false
+}
+
 export function ResponsiveToaster() {
-  const [isSmallScreen, setIsSmallScreen] = useState(false)
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 640px)')
-
-    function handleChange(event: MediaQueryListEvent) {
-      setIsSmallScreen(event.matches)
-    }
-
-    setIsSmallScreen(mediaQuery.matches)
-    mediaQuery.addEventListener('change', handleChange)
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange)
-    }
-  }, [])
+  const isSmallScreen = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  )
 
   return (
     <Toaster
