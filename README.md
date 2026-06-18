@@ -25,6 +25,12 @@ Mini Resource Library is a small full-stack app for saving and managing learning
 - Optional rating and notes
 - Responsive dashboard layout
 
+## Screenshots
+
+| Light mode | Dark mode |
+| --- | --- |
+| ![Mini Resource Library dashboard in light mode](docs/screenshots/dashboard-light.png) | ![Mini Resource Library dashboard in dark mode](docs/screenshots/dashboard-dark.png) |
+
 ## Getting started
 
 Install dependencies:
