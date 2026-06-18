@@ -1,4 +1,5 @@
 'use client'
+
 import { useActionState, useEffect, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { Loader2Icon } from 'lucide-react'
@@ -45,9 +46,41 @@ export function CreateCategoryDialog({
   onOpenChange,
   onCategoryCreated,
 }: CreateCategoryDialogProps) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {open && (
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add category</DialogTitle>
+            <DialogDescription>
+              Create a category without leaving the resource form.
+            </DialogDescription>
+          </DialogHeader>
+
+          <CreateCategoryForm
+            onCancel={() => onOpenChange(false)}
+            onSuccess={(category) => {
+              onCategoryCreated(category)
+              onOpenChange(false)
+            }}
+          />
+        </DialogContent>
+      )}
+    </Dialog>
+  )
+}
+
+function CreateCategoryForm({
+  onCancel,
+  onSuccess,
+}: {
+  onCancel: () => void
+  onSuccess: (category: ResourceFormCategory) => void
+}) {
   const [name, setName] = useState('')
   const [color, setColor] = useState<CategoryColorValue>('SLATE')
   const [state, formAction] = useActionState(createInlineCategory, initialState)
+
   const handledStateRef = useRef<string | null>(null)
 
   useEffect(() => {
@@ -57,8 +90,8 @@ export function CreateCategoryDialog({
 
     const stateKey =
       state.status === 'success' && state.category
-        ? `${state.status}-${state.category.id}`
-        : `${state.status}-${state.message}`
+        ? `success-${state.category.id}`
+        : `error-${state.message}`
 
     if (handledStateRef.current === stateKey) {
       return
@@ -69,15 +102,12 @@ export function CreateCategoryDialog({
     if (state.status === 'success' && state.category) {
       toast.success(state.message)
 
-      onCategoryCreated({
+      onSuccess({
         id: state.category.id,
         name: state.category.name,
         color: state.category.color,
       })
 
-      setName('')
-      setColor('SLATE')
-      onOpenChange(false)
       return
     }
 
@@ -86,7 +116,7 @@ export function CreateCategoryDialog({
         duration: 5000,
       })
     }
-  }, [state, onCategoryCreated, onOpenChange])
+  }, [state, onSuccess])
 
   function handleColorChange(value: string) {
     if (isCategoryColor(value)) {
@@ -95,77 +125,56 @@ export function CreateCategoryDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add category</DialogTitle>
-          <DialogDescription>
-            Create a category without leaving the resource form.
-          </DialogDescription>
-        </DialogHeader>
+    <form action={formAction}>
+      <FieldGroup>
+        <Field>
+          <FieldLabel htmlFor="inline-category-name">Name</FieldLabel>
+          <Input
+            autoComplete="off"
+            id="inline-category-name"
+            maxLength={40}
+            name="name"
+            onChange={(event) => setName(event.target.value)}
+            placeholder="e.g. Frontend, Backend, TypeScript"
+            required
+            type="text"
+            value={name}
+          />
+        </Field>
 
-        <form action={formAction}>
-          <FieldGroup>
-            <Field>
-              <FieldLabel htmlFor="inline-category-name">Name</FieldLabel>
-              <Input
-                autoComplete="off"
-                id="inline-category-name"
-                maxLength={40}
-                name="name"
-                onChange={(event) => setName(event.target.value)}
-                placeholder="e.g. Frontend, Backend, TypeScript"
-                required
-                type="text"
-                value={name}
-              />
-            </Field>
+        <Field>
+          <FieldLabel htmlFor="inline-category-color">Color</FieldLabel>
 
-            <Field>
-              <FieldLabel htmlFor="inline-category-color">Color</FieldLabel>
-              <Select
-                name="color"
-                value={color}
-                onValueChange={handleColorChange}
-              >
-                <SelectTrigger id="inline-category-color">
-                  <SelectValue placeholder="Select color" />
-                </SelectTrigger>
+          <Select name="color" value={color} onValueChange={handleColorChange}>
+            <SelectTrigger id="inline-category-color">
+              <SelectValue placeholder="Select color" />
+            </SelectTrigger>
 
-                <SelectContent>
-                  {CATEGORY_COLORS.map((colorOption) => (
-                    <SelectItem
-                      key={colorOption.value}
-                      value={colorOption.value}
-                    >
-                      <span className="flex items-center gap-2">
-                        <span
-                          className={`size-2.5 rounded-full ${colorOption.bulletClassName}`}
-                          aria-hidden="true"
-                        />
-                        {colorOption.label}
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
+            <SelectContent>
+              {CATEGORY_COLORS.map((colorOption) => (
+                <SelectItem key={colorOption.value} value={colorOption.value}>
+                  <span className="flex items-center gap-2">
+                    <span
+                      className={`size-2.5 rounded-full ${colorOption.bulletClassName}`}
+                      aria-hidden="true"
+                    />
+                    {colorOption.label}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
 
-            <div className="flex justify-end gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
-                Cancel
-              </Button>
+        <div className="flex justify-end gap-2">
+          <Button type="button" variant="outline" onClick={onCancel}>
+            Cancel
+          </Button>
 
-              <SubmitButton />
-            </div>
-          </FieldGroup>
-        </form>
-      </DialogContent>
-    </Dialog>
+          <SubmitButton />
+        </div>
+      </FieldGroup>
+    </form>
   )
 }
 
