@@ -84,7 +84,7 @@ export default async function Page() {
         </Breadcrumb>
       </SiteHeader>
       <ContainerMain>
-        <div className="space-y-8">
+        <div className="space-y-6">
           <StatusSummary resourceCounts={resourceCounts} />
 
           <CurrentlyReadingSection resources={currentlyReading} />
