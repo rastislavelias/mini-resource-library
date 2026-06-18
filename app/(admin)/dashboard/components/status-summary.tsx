@@ -72,7 +72,7 @@ export function StatusSummary({
                 aria-hidden="true"
               />
 
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-1">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1">
                     <CardDescription>{card.title}</CardDescription>
