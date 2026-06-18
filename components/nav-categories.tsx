@@ -70,7 +70,11 @@ export function NavCategories({ categories }: { categories: categories }) {
       <SidebarMenu className="space-y-1">
         {visibleCategories.map((category) => (
           <SidebarMenuItem key={category.id}>
-            <SidebarMenuButton asChild isActive={isCategoryActive(category.id)}>
+            <SidebarMenuButton
+              asChild
+              isActive={isCategoryActive(category.id)}
+              className="h-7"
+            >
               <SidebarLink href={getCategoryHref(category.id)}>
                 <CategoryBullet color={category.color} />
                 <span className="truncate">{category.name}</span>
@@ -88,7 +92,7 @@ export function NavCategories({ categories }: { categories: categories }) {
           <DropdownMenu>
             <SidebarMenuItem>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="text-sidebar-foreground/70 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                <SidebarMenuButton className="text-sidebar-foreground/70 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground h-7">
                   More categories
                   <MoreHorizontalIcon className="text-sidebar-foreground/70 me-1 ml-auto" />
                 </SidebarMenuButton>
