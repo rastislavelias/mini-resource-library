@@ -1,12 +1,30 @@
+import { redirect } from 'next/navigation'
+import { auth } from '@clerk/nextjs/server'
+
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb'
+import { ContainerMain } from '@/components/container-main'
+import { ResourcesPageContent } from './components/resources-page-content'
+import { ResourcesToast } from './components/resources-toast'
 import { SiteHeader } from '@/components/site-header'
 
-export default function Page() {
+import type { ResourceSearchParams } from '@/lib/resources/query-params'
+
+type PageProps = {
+  searchParams: Promise<ResourceSearchParams>
+}
+
+export default async function Page({ searchParams }: PageProps) {
+  const { userId } = await auth()
+
+  if (!userId) {
+    redirect('/sign-in')
+  }
+
   return (
     <>
       <SiteHeader>
@@ -18,11 +36,14 @@ export default function Page() {
           </BreadcrumbList>
         </Breadcrumb>
       </SiteHeader>
-      <div className="flex flex-1 flex-col">
-        <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="px-4 lg:px-6">WIP</div>
-        </div>
-      </div>
+      <ContainerMain>
+        <ResourcesPageContent
+          userId={userId}
+          view="all"
+          searchParams={await searchParams}
+        />
+        <ResourcesToast />
+      </ContainerMain>
     </>
   )
 }
