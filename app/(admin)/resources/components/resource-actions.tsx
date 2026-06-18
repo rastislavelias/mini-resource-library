@@ -15,7 +15,6 @@ import type { Resource } from './resource-item'
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
