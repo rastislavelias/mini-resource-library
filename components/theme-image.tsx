@@ -1,6 +1,7 @@
 'use client'
-import { useEffect, useState } from 'react'
-import Image, { ImageProps } from 'next/image'
+
+import { useSyncExternalStore } from 'react'
+import Image, { type ImageProps } from 'next/image'
 import { useTheme } from 'next-themes'
 
 import { Skeleton } from './ui/skeleton'
@@ -13,14 +14,31 @@ type Props = Omit<
   srcDark: string
 }
 
-export const ThemeImage = (props: Props) => {
-  const [mounted, setMounted] = useState(false)
+function subscribe() {
+  return () => {}
+}
+
+function getClientSnapshot() {
+  return true
+}
+
+function getServerSnapshot() {
+  return false
+}
+
+export function ThemeImage(props: Props) {
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot
+  )
+
   const { resolvedTheme } = useTheme()
   const { alt, className, srcLight, srcDark, loading, ...rest } = props
 
-  useEffect(() => setMounted(true), [])
-
-  if (!mounted) return <Skeleton className="size-full" />
+  if (!mounted) {
+    return <Skeleton className="size-full" />
+  }
 
   const src = resolvedTheme === 'dark' ? srcDark : srcLight
 
