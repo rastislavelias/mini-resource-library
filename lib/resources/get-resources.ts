@@ -65,8 +65,6 @@ export async function getResources({
     take: RESOURCE_PAGE_SIZE,
   })
 
-  console.log('resources', resources)
-
   return {
     resources,
     totalCount,
