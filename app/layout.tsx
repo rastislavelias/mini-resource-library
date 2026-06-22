@@ -1,8 +1,11 @@
 import type { Metadata } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
+import { shadcn } from '@clerk/ui/themes'
 import { Geist, Geist_Mono } from 'next/font/google'
-import '../globals.css'
 
+import './globals.css'
+
+import { ResponsiveToaster } from '@/components/responsive-toaster'
 import { ThemeProvider } from '@/components/theme-provider'
 
 const geistSans = Geist({
@@ -29,6 +32,12 @@ export default function RootLayout({
     <ClerkProvider
       signInForceRedirectUrl="/dashboard"
       signUpForceRedirectUrl="/dashboard"
+      appearance={{
+        theme: shadcn,
+        elements: {
+          popoverBox: '!shadow-md ring-1 !ring-foreground/10',
+        },
+      }}
     >
       <html
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -43,6 +52,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <ResponsiveToaster />
           </ThemeProvider>
         </body>
       </html>
