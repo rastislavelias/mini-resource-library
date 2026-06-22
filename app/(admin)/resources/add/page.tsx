@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { auth } from '@clerk/nextjs/server'
 
 import { prisma } from '@/lib/prisma'
@@ -15,6 +16,10 @@ import {
 import { ContainerMain } from '@/components/container-main'
 import { ResourceForm } from '../components/resource-form'
 import { SiteHeader } from '@/components/site-header'
+
+export const metadata: Metadata = {
+  title: 'Add Resource',
+}
 
 export default async function Page() {
   const { userId } = await auth()

@@ -19,7 +19,10 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Mini Resource Library',
+  title: {
+    default: 'Mini Resource Library',
+    template: '%s | Mini Resource Library',
+  },
   description: 'Save and manage private learning resources.',
 }
 

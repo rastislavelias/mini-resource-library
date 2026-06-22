@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { auth } from '@clerk/nextjs/server'
 
 import { ResourceStatus } from '@/generated/prisma/client'
@@ -17,6 +18,10 @@ import { prisma } from '@/lib/prisma'
 import { CurrentlyReadingSection } from './components/currently-reading-section'
 import { StatusSummary } from './components/status-summary'
 import { TopRatedResources } from './components/top-rated-resources'
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+}
 
 const dashboardResourceSelect = {
   id: true,

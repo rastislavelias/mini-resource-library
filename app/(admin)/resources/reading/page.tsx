@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { auth } from '@clerk/nextjs/server'
 
 import { ResourceStatus } from '@/generated/prisma/client'
@@ -16,6 +17,10 @@ import { ContainerMain } from '@/components/container-main'
 import { ResourcesPageContent } from '../components/resources-page-content'
 import { ResourcesToast } from '../components/resources-toast'
 import { SiteHeader } from '@/components/site-header'
+
+export const metadata: Metadata = {
+  title: 'Reading',
+}
 
 import type { ResourceSearchParams } from '@/lib/resources/query-params'
 

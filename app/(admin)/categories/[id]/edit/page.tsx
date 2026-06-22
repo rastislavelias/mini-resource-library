@@ -1,4 +1,5 @@
 import { notFound, redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
@@ -15,6 +16,10 @@ import {
 import { CategoryForm } from '../../components/category-form'
 import { ContainerMain } from '@/components/container-main'
 import { SiteHeader } from '@/components/site-header'
+
+export const metadata: Metadata = {
+  title: 'Edit Category',
+}
 
 export default async function Page({
   params,

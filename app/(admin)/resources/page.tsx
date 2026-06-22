@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { auth } from '@clerk/nextjs/server'
 
 import {
@@ -13,6 +14,10 @@ import { ResourcesToast } from './components/resources-toast'
 import { SiteHeader } from '@/components/site-header'
 
 import type { ResourceSearchParams } from '@/lib/resources/query-params'
+
+export const metadata: Metadata = {
+  title: 'Resources',
+}
 
 type PageProps = {
   searchParams: Promise<ResourceSearchParams>
