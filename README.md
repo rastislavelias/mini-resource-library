@@ -2,6 +2,8 @@
 
 Mini Resource Library is a small full-stack app for saving and managing learning resources. Signed-in users can create private resources with a title, URL, category, notes, status, and optional rating. The app uses Clerk for authentication, Prisma with PostgreSQL for data storage, and server actions for database mutations. One backend decision was to store categories in a separate table so users can manage their own category names and colors. One trade-off is that filtering, pagination, and search are intentionally simple instead of building a complex tagging or search system.
 
+Live production app: [resources.rastislavelias.com](https://resources.rastislavelias.com)
+
 ## Tech stack
 
 - Next.js App Router
@@ -15,7 +17,8 @@ Mini Resource Library is a small full-stack app for saving and managing learning
 
 ## Features
 
-- Sign in and sign up with Clerk
+- Production authentication with Clerk
+- Sign in and sign up with Google
 - Private resources per user
 - Create, edit, and delete resources
 - Create and manage categories
