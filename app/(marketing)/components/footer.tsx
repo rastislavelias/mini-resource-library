@@ -3,7 +3,7 @@ import { ExternalLink } from 'lucide-react'
 
 export function Footer() {
   return (
-    <footer className="text-muted-foreground bg-muted mt-12 border-t px-6 py-12 text-sm">
+    <footer className="bg-muted mt-12 border-t px-6 py-12 text-sm text-zinc-600">
       <p className="max-w-xl lg:mx-auto lg:text-center">
         Mini Resource Library is a Next.js app that lets users save and manage
         private learning resources, focusing on authentication, database
